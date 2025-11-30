@@ -41,7 +41,7 @@
             line-height: 1.6;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Cinzel', serif;
         }
 
@@ -340,63 +340,178 @@
             transform: scale(1.1);
         }
 
-        /* --- Developer Section --- */
+        /* --- Developer Section (Updated) --- */
         .developer-section {
             background: #0f172a;
-            text-align: center;
             position: relative;
+            padding-bottom: 8rem;
         }
 
-        .tech-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 3rem;
-            border-radius: 15px;
-            max-width: 800px;
+        .tech-subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 3rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .tech-icons {
-            font-size: 2.5rem;
+        .project-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.4);
+            border-color: var(--primary-gold);
+        }
+
+        .card-header {
+            background: #1e293b;
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .card-address-bar {
+            background: rgba(255,255,255,0.1);
+            height: 10px;
+            flex-grow: 1;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-title {
+            color: var(--primary-gold);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .tech-stack-mini {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
             color: var(--accent-blue);
         }
 
-        .btn {
+        .preview-btn {
             display: inline-block;
-            padding: 12px 30px;
-            border: 2px solid var(--primary-gold);
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--primary-gold);
             color: var(--primary-gold);
-            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2rem;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        .btn::after {
-            content: '';
-            position: absolute;
+        .preview-btn:hover {
+            background: var(--primary-gold);
+            color: #0f172a;
+        }
+
+        .live-preview-modal {
+            position: fixed;
             top: 0;
             left: 0;
-            width: 0%;
-            height: 100%;
-            background: var(--primary-gold);
-            z-index: -1;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            color: #000;
-        }
-
-        .btn:hover::after {
             width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-header {
+            background: #000;
+            padding: 15px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-title {
+            color: white;
+            font-family: 'Cinzel', serif;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-close, .modal-external {
+            color: white;
+            background: none;
+            border: 1px solid #444;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover { background: #b91c1c; border-color: #b91c1c; }
+        .modal-external:hover { background: var(--accent-blue); border-color: var(--accent-blue); }
+
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+            background: #fff;
+            position: relative;
+        }
+        
+        .iframe-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 2;
         }
 
         /* --- Footer --- */
@@ -481,6 +596,10 @@
             .about-img img {
                 max-width: 100%;
             }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -493,7 +612,7 @@
             <a href="#hero">Home</a>
             <a href="#about">About</a>
             <a href="#author">Author</a>
-            <a href="#developer">Developer</a>
+            <a href="#developer">Portfolio</a>
             <a href="#press">Press</a>
             <a href="#contact">Contact</a>
         </div>
@@ -620,29 +739,91 @@
         </div>
     </section>
 
-    <!-- Developer Section -->
+    <!-- Developer Section (Updated to Portfolio) -->
     <section id="developer" class="section developer-section">
-        <div class="tech-card fade-in">
-            <h2 class="section-title light">The Web Developer</h2>
-            <p style="margin-top: 1rem; color: #aaa;">
-                Beyond the pen, Wisdom crafts immersive digital experiences. Focusing on clean code, responsive design, and user-centric interfaces.
-            </p>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 class="section-title light fade-in">Web Portfolio</h2>
+            <p class="tech-subtitle fade-in">Digital Solutions Engineered for Performance</p>
+        </div>
+
+        <div class="portfolio-grid">
             
-            <div class="tech-icons">
-                <i class="fab fa-html5"></i>
-                <i class="fab fa-css3-alt"></i>
-                <i class="fab fa-js"></i>
-                <i class="fab fa-react"></i>
-                <i class="fas fa-code"></i>
+            <!-- Project 1: Blue Currant -->
+            <div class="project-card fade-in">
+                <div class="card-header">
+                    <div class="browser-dot dot-red"></div>
+                    <div class="browser-dot dot-yellow"></div>
+                    <div class="browser-dot dot-green"></div>
+                    <div class="card-address-bar"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Blue Currant Care Agency</h3>
+                    <div class="tech-stack-mini">
+                        <i class="fas fa-server"></i>
+                        <span>Corporate Business</span>
+                    </div>
+                    <p class="card-desc">
+                        A compassionate and professional digital presence designed for a care agency. The platform features accessible service listings, recruitment portals, and a clean user interface built to establish trust and reliability in the healthcare sector.
+                    </p>
+                    <button class="preview-btn" onclick="openModal('https://bluecurrantcareagency.co.uk', 'Blue Currant Care Agency')">
+                        <i class="fas fa-eye"></i> View Live Site
+                    </button>
+                </div>
             </div>
 
-            <p style="color: #ccc; margin-bottom: 2rem;">
-                Looking for technical expertise? Visit my dedicated development portfolio.
-            </p>
-            
-            <a href="https://wa.me/27747112673" target="_blank" class="btn">View Developer Portfolio</a>
+            <!-- Project 2: TM Branding -->
+            <div class="project-card fade-in">
+                <div class="card-header">
+                    <div class="browser-dot dot-red"></div>
+                    <div class="browser-dot dot-yellow"></div>
+                    <div class="browser-dot dot-green"></div>
+                    <div class="card-address-bar"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">TM Branding Solutions</h3>
+                    <div class="tech-stack-mini">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Creative Portfolio</span>
+                    </div>
+                    <p class="card-desc">
+                        A dynamic portfolio and service showcase for a modern branding agency. Built for performance and visual impact, this project highlights creative works with fluid responsiveness and a modern aesthetic suitable for a design-led business.
+                    </p>
+                    <button class="preview-btn" onclick="openModal('https://tmbrandingsolutions.vercel.app/', 'TM Branding Solutions')">
+                        <i class="fas fa-eye"></i> View Live Site
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tech Stack Icons (Kept for flavor) -->
+        <div class="tech-icons fade-in" style="margin-top: 4rem;">
+            <i class="fab fa-html5" title="HTML5"></i>
+            <i class="fab fa-css3-alt" title="CSS3"></i>
+            <i class="fab fa-js" title="JavaScript"></i>
+            <i class="fab fa-react" title="React"></i>
+            <i class="fas fa-database" title="Backend"></i>
         </div>
     </section>
+
+    <!-- Live Preview Modal -->
+    <div id="previewModal" class="live-preview-modal">
+        <div class="modal-header">
+            <h3 id="modalTitle" class="modal-title">Live Preview</h3>
+            <div class="modal-actions">
+                <a id="externalLink" href="#" target="_blank" class="modal-external">
+                    <i class="fas fa-external-link-alt"></i> Open in New Tab
+                </a>
+                <button onclick="closeModal()" class="modal-close">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+        <div class="iframe-container">
+            <div class="iframe-loader">Loading Live Site...</div>
+            <iframe id="previewFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer id="contact">
@@ -665,6 +846,41 @@
     </footer>
 
     <script>
+        // Modal Logic
+        const modal = document.getElementById('previewModal');
+        const iframe = document.getElementById('previewFrame');
+        const modalTitle = document.getElementById('modalTitle');
+        const externalLink = document.getElementById('externalLink');
+
+        function openModal(url, title) {
+            modal.style.display = 'flex';
+            // Slight delay to allow display flex to apply before opacity transition
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+            
+            iframe.src = url;
+            modalTitle.textContent = title;
+            externalLink.href = url;
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                iframe.src = ''; // Stop loading
+            }, 300);
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside iframe
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
         // Smooth Scroll and Animation Logic
         document.addEventListener('DOMContentLoaded', () => {
             
