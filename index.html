@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Ncube | Developer & Author</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --primary-gold: #c5a059;
+            --text-light: #e2e8f0;
+            --text-dark: #1e293b;
+            --bg-paper: #f9f8f4;
+            --accent-blue: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+        }
+
+        p.poetry-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-gold);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* --- Hero Section (Split) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px; /* Offset for nav */
+        }
+
+        .hero-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: flex 0.5s ease;
+            overflow: hidden;
+        }
+
+        .hero-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
+        .hero-left::before {
+            background-image: url('542761670_2909337272591741_3555716252373006385_n.jpg'); 
+        }
+
+        .hero-right::before {
+            background-image: url('477301304_2683087481883389_904248693233776087_n.jpg'); 
+        }
+
+        .hero-side:hover {
+            flex: 1.5;
+        }
+
+        .hero-side:hover::before {
+            transform: scale(1.05);
+            filter: brightness(0.6);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 2rem;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* --- About Section --- */
+        .section {
+            padding: 5rem 10%;
+            position: relative;
+        }
+
+        .about {
+            background: var(--bg-paper);
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+            text-align: left;
+        }
+
+        .about-img img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 5px;
+            box-shadow: 20px 20px 0px var(--primary-gold);
+            filter: grayscale(100%);
+            transition: 0.5s;
+        }
+
+        .about-img img:hover {
+            filter: grayscale(0%);
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title.light {
+            color: var(--text-light);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-gold);
+            margin: 10px auto 0;
+        }
+
+        /* --- The Author Section (Masterpiece Focus) --- */
+        .author-section {
+            background: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.95)), url('486466151_2731197983739005_2906448294542532482_n.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .book-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .book-3d-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 450px;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: transform 0.5s;
+            border-radius: 2px;
+        }
+        
+        .book-cover:hover {
+            transform: rotateY(-10deg) rotateX(5deg) scale(1.02);
+        }
+
+        .book-details {
+            max-width: 600px;
+        }
+
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(197, 160, 89, 0.2);
+            border: 1px solid var(--primary-gold);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            color: var(--primary-gold);
+        }
+        
+        .award-badge i {
+            margin-right: 10px;
+        }
+
+        .book-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            border-left: 3px solid var(--primary-gold);
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #ccc;
+        }
+
+        /* --- Press / News Gallery --- */
+        .press-section {
+            background: #fff;
+            color: var(--text-dark);
+        }
+
+        .press-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 3rem;
+        }
+
+        .press-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            height: 250px;
+        }
+
+        .press-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .press-overlay {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            transition: bottom 0.3s;
+        }
+
+        .press-item:hover .press-overlay {
+            bottom: 0;
+        }
+
+        .press-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* --- Developer Section --- */
+        .developer-section {
+            background: #0f172a;
+            text-align: center;
+            position: relative;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tech-icons {
+            font-size: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            color: var(--accent-blue);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--primary-gold);
+            z-index: -1;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            color: #000;
+        }
+
+        .btn:hover::after {
+            width: 100%;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #050911;
+            padding: 4rem 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-gold);
+            transform: translateY(-5px);
+        }
+
+        /* --- Animations --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+            }
+            
+            .hero-side:hover {
+                flex: 1;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-showcase {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .book-quote {
+                border-left: none;
+                border-top: 3px solid var(--primary-gold);
+                padding-top: 20px;
+            }
+
+            .nav-links {
+                display: none; /* Hide for now on mobile, simplistic */
+            }
+            
+            .hamburger {
+                display: block;
+                color: var(--primary-gold);
+            }
+            
+            .about-img img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">WISDOM NCUBE</div>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#about">About</a>
+            <a href="#author">Author</a>
+            <a href="#developer">Developer</a>
+            <a href="#press">Press</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div id="hero" class="hero">
+        <div class="hero-side hero-left">
+            <div class="hero-content">
+                <h1 class="hero-title">Developer</h1>
+                <p class="hero-subtitle">Logic & Code</p>
+            </div>
+        </div>
+        <div class="hero-side hero-right">
+            <div class="hero-content">
+                <h1 class="hero-title">Poet</h1>
+                <p class="hero-subtitle">Emotion & Verse</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <h2 class="section-title fade-in">The Man Behind The Words</h2>
+        <div class="about-grid">
+            <div class="about-img fade-in">
+                <!-- Using the B&W Portrait for classy About look -->
+                <img src="480903583_2699849513540519_4914219044402982331_n.jpg" alt="Wisdom Ncube Portrait">
+            </div>
+            <div class="about-text fade-in">
+                <p class="poetry-text" style="font-size: 1.2rem; color: #555; margin-bottom: 20px;">
+                    "To write code is to instruct the mind. To write poetry is to instruct the soul."
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Wisdom Ncube is a multi-talented creative hailing from Bulawayo, Zimbabwe. He embodies a rare duality: a sharp technical mind capable of architecting complex web solutions, and a sensitive soul that captures the nuance of the human experience through poetry.
+                </p>
+                <p>
+                    Editor of Cloutbase magazine and a voice for the silenced, Wisdom’s journey has taken him from the logic of programming to the stages of international literary recognition. Whether he is building digital infrastructures or weaving stanzas about love and sacrifice, his goal remains the same: to create something lasting and meaningful.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section (The Masterpiece) -->
+    <section id="author" class="section author-section">
+        <div style="text-align: center;">
+            <div class="award-badge fade-in">
+                <i class="fas fa-trophy"></i>
+                <span>2022 AfriCAN Honoree Authors' Award Winner</span>
+            </div>
+            <h2 class="section-title light fade-in">Words of Wisdom</h2>
+        </div>
+
+        <div class="book-showcase">
+            <div class="book-3d-container fade-in">
+                <!-- Book Cover -->
+                <img src="476448718_2683561178502686_8594790215747721482_n.jpg" alt="Words of Wisdom Book Cover" class="book-cover">
+            </div>
+            
+            <div class="book-details fade-in">
+                <h3>Poetry Collection Vol. 1</h3>
+                <p class="book-quote">
+                    "A multi-faceted expression of raw poetry in simplicity that takes the reader through a roller coaster of emotions."
+                </p>
+                <p style="margin-bottom: 20px; opacity: 0.9;">
+                    This award-winning anthology explores the profound topics of love, sacrifice, religion, and the often-silenced voices of the girl child. Awarded the prestigious <strong>AfriCAN Honoree Authors' Award</strong> in South Africa (July 2022), this collection established Wisdom Ncube as a significant literary voice in Zimbabwe and beyond.
+                </p>
+                
+                <div style="margin-top: 30px; display: flex; align-items: center; gap: 20px;">
+                    <!-- Award Image small thumbnail -->
+                    <img src="481295657_2708592912666179_6215757589555293357_n.jpg" alt="The Award" style="width: 100px; border-radius: 5px; border: 1px solid var(--primary-gold);">
+                    <div>
+                        <h4 style="color: var(--primary-gold);">Awarded Excellence</h4>
+                        <small>Recognized for contribution to African Literature</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Section -->
+    <section id="press" class="section press-section">
+        <div style="text-align: center;">
+            <h2 class="section-title fade-in">In The Press</h2>
+            <p class="fade-in" style="margin-top: 10px; color: #666;">Documenting the journey from Bulawayo to the World.</p>
+        </div>
+
+        <div class="press-grid">
+            <!-- News Article 1 -->
+            <div class="press-item fade-in">
+                <img src="480962028_2702215599970577_4291725976441402062_n.jpg" alt="AllAfrica Article">
+                <div class="press-overlay">
+                    <h4>AllAfrica / New Zimbabwe</h4>
+                    <p>"Zimbabwean Author Gets African Recognition"</p>
+                </div>
+            </div>
+            <!-- News Article 2 -->
+            <div class="press-item fade-in">
+                <img src="480799281_2702206123304858_4362177325754504039_n.jpg" alt="NewsDay Article">
+                <div class="press-overlay">
+                    <h4>NewsDay Life & Style</h4>
+                    <p>"Byo poet's anthology nominated for international award"</p>
+                </div>
+            </div>
+            <!-- News Article 3 -->
+            <div class="press-item fade-in">
+                <img src="480778372_2702211509970986_3405744343297033689_n.jpg" alt="Newspaper Spread">
+                <div class="press-overlay">
+                    <h4>Print Feature</h4>
+                    <p>Featured alongside Zimbabwe's creative giants.</p>
+                </div>
+            </div>
+            <!-- Extra Photo -->
+            <div class="press-item fade-in">
+                <img src="488207155_2742266812632122_6248440323943516653_n.jpg" alt="Wisdom at work">
+                <div class="press-overlay">
+                    <h4>The Developer</h4>
+                    <p>Powering future tech.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section id="developer" class="section developer-section">
+        <div class="tech-card fade-in">
+            <h2 class="section-title light">The Web Developer</h2>
+            <p style="margin-top: 1rem; color: #aaa;">
+                Beyond the pen, Wisdom crafts immersive digital experiences. Focusing on clean code, responsive design, and user-centric interfaces.
+            </p>
+            
+            <div class="tech-icons">
+                <i class="fab fa-html5"></i>
+                <i class="fab fa-css3-alt"></i>
+                <i class="fab fa-js"></i>
+                <i class="fab fa-react"></i>
+                <i class="fas fa-code"></i>
+            </div>
+
+            <p style="color: #ccc; margin-bottom: 2rem;">
+                Looking for technical expertise? Visit my dedicated development portfolio.
+            </p>
+            
+            <a href="https://wisdomncube.com" target="_blank" class="btn">View Developer Portfolio</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <h3 style="color: white; font-family: 'Cinzel'; margin-bottom: 1rem;">Wisdom Ncube</h3>
+        <p style="color: #888; margin-bottom: 2rem;">Bulawayo, Zimbabwe</p>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/wisdom.ncube.1" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/wizzncube" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:contact@wisdomncube.com" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+        
+        <p style="color: #444; font-size: 0.8rem;">&copy; 2025 Wisdom Ncube. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth Scroll and Animation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Intersection Observer for Fade-in animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Mobile Menu Toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                if (navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none';
+                } else {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '70px';
+                    navLinks.style.right = '0';
+                    navLinks.style.background = 'rgba(15, 23, 42, 0.95)';
+                    navLinks.style.width = '100%';
+                    navLinks.style.padding = '20px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
