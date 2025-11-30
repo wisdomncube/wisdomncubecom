@@ -68,6 +68,41 @@
             box-shadow: 0 0 10px var(--primary-gold);
         }
 
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 1000;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            background: transparent;
+            color: var(--primary-gold);
+            border-color: var(--primary-gold);
+        }
+
         /* Particles Canvas */
         #particle-canvas {
             position: fixed;
@@ -115,6 +150,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             color: var(--primary-gold);
+            cursor: default; /* For cipher effect */
         }
 
         .nav-links {
@@ -154,7 +190,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            transition: flex 0.5s ease;
+            transition: flex 0.5s ease, filter 0.5s ease, opacity 0.5s ease;
             overflow: hidden;
             text-decoration: none;
         }
@@ -189,6 +225,12 @@
         .hero-side:hover::before {
             transform: scale(1.05);
             filter: brightness(0.6);
+        }
+
+        /* Hero Focus Effect Logic */
+        .hero:hover .hero-side:not(:hover) {
+            filter: blur(5px) grayscale(100%);
+            opacity: 0.6;
         }
 
         .hero-content {
@@ -483,14 +525,40 @@
             color: var(--accent-blue);
         }
 
-        /* --- Updated Tech Icons Size --- */
-        .tech-icons {
-            font-size: 5rem; /* Increased size */
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 4rem 0 2rem;
+        /* --- Infinite Tech Scroller --- */
+        .tech-scroller {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 4rem 0 2rem;
+            max-width: 100%;
+        }
+
+        .tech-track {
+            display: inline-block;
+            animation: scroll-infinite 30s linear infinite;
+        }
+        
+        /* Pause on hover for easier viewing */
+        .tech-track:hover {
+            animation-play-state: paused;
+        }
+
+        .tech-icon-item {
+            display: inline-block;
+            font-size: 5rem;
             color: var(--accent-blue);
+            margin: 0 3rem;
+            transition: color 0.3s;
+        }
+        
+        .tech-icon-item:hover {
+            color: var(--primary-gold);
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         .preview-btn {
@@ -666,6 +734,12 @@
             .portfolio-grid {
                 grid-template-columns: 1fr;
             }
+            
+            /* Disable fancy hover effects on touch devices for usability */
+            .hero:hover .hero-side:not(:hover) {
+                filter: none;
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -674,12 +748,17 @@
     <!-- Reading Progress Bar -->
     <div id="scrollProgress" class="scroll-progress"></div>
 
+    <!-- Back to Top Button -->
+    <a href="#" id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <!-- Particle Background Canvas -->
     <canvas id="particle-canvas"></canvas>
 
     <!-- Navigation -->
     <nav>
-        <div class="logo">WISDOM NCUBE</div>
+        <div class="logo cipher-text" data-value="WISDOM NCUBE">WISDOM NCUBE</div>
         <div class="nav-links">
             <a href="#hero">Home</a>
             <a href="#about">About</a>
@@ -816,7 +895,7 @@
     <!-- Developer Section (Updated to Portfolio) -->
     <section id="developer" class="section developer-section">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 class="section-title light fade-in">Web Portfolio</h2>
+            <h2 class="section-title light fade-in cipher-text" data-value="Web Portfolio">Web Portfolio</h2>
             <p class="tech-subtitle fade-in">Digital Solutions Engineered for Performance</p>
         </div>
 
@@ -870,13 +949,29 @@
 
         </div>
 
-        <!-- Tech Stack Icons (Kept for flavor) -->
-        <div class="tech-icons fade-in">
-            <i class="fab fa-html5" title="HTML5"></i>
-            <i class="fab fa-css3-alt" title="CSS3"></i>
-            <i class="fab fa-js" title="JavaScript"></i>
-            <i class="fab fa-react" title="React"></i>
-            <i class="fas fa-database" title="Backend"></i>
+        <!-- Infinite Tech Scroller -->
+        <div class="tech-scroller fade-in">
+            <div class="tech-track">
+                <!-- Original Set -->
+                <i class="fab fa-html5 tech-icon-item" title="HTML5"></i>
+                <i class="fab fa-css3-alt tech-icon-item" title="CSS3"></i>
+                <i class="fab fa-js tech-icon-item" title="JavaScript"></i>
+                <i class="fab fa-react tech-icon-item" title="React"></i>
+                <i class="fas fa-database tech-icon-item" title="Backend"></i>
+                <i class="fab fa-git-alt tech-icon-item" title="Git"></i>
+                <i class="fab fa-node tech-icon-item" title="Node.js"></i>
+                <i class="fab fa-sass tech-icon-item" title="Sass"></i>
+                
+                <!-- Duplicate Set for Seamless Loop -->
+                <i class="fab fa-html5 tech-icon-item" title="HTML5"></i>
+                <i class="fab fa-css3-alt tech-icon-item" title="CSS3"></i>
+                <i class="fab fa-js tech-icon-item" title="JavaScript"></i>
+                <i class="fab fa-react tech-icon-item" title="React"></i>
+                <i class="fas fa-database tech-icon-item" title="Backend"></i>
+                <i class="fab fa-git-alt tech-icon-item" title="Git"></i>
+                <i class="fab fa-node tech-icon-item" title="Node.js"></i>
+                <i class="fab fa-sass tech-icon-item" title="Sass"></i>
+            </div>
         </div>
     </section>
 
@@ -929,6 +1024,14 @@
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (scrollTop / scrollHeight) * 100;
             document.getElementById('scrollProgress').style.width = scrolled + '%';
+            
+            // --- Back to Top Visibility ---
+            const backToTopBtn = document.getElementById('backToTop');
+            if (scrollTop > window.innerHeight) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
         });
 
         // --- 2. Typewriter Effect Logic ---
@@ -976,7 +1079,31 @@
             });
         });
 
-        // --- 4. Particle System Logic ---
+        // --- 4. Cipher / Hacker Text Effect Logic ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        document.querySelectorAll(".cipher-text").forEach(element => {
+            element.onmouseover = event => {
+                let iterations = 0;
+                // Store original text in dataset if not already present
+                if (!event.target.dataset.value) event.target.dataset.value = event.target.innerText;
+                
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) {
+                                return event.target.dataset.value[index];
+                            }
+                            return letters[Math.floor(Math.random() * 26)]
+                        })
+                        .join("");
+                    
+                    if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 3;
+                }, 30);
+            }
+        });
+
+        // --- 5. Particle System Logic ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particlesArray;
