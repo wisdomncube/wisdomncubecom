@@ -117,6 +117,7 @@
             position: relative;
             transition: flex 0.5s ease;
             overflow: hidden;
+            text-decoration: none; /* Ensure no underline on the link block */
         }
 
         .hero-side::before {
@@ -143,6 +144,7 @@
 
         .hero-side:hover {
             flex: 1.5;
+            cursor: pointer;
         }
 
         .hero-side:hover::before {
@@ -427,6 +429,16 @@
             color: var(--accent-blue);
         }
 
+        /* --- Updated Tech Icons Size --- */
+        .tech-icons {
+            font-size: 5rem; /* Increased size */
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 4rem 0 2rem;
+            color: var(--accent-blue);
+        }
+
         .preview-btn {
             display: inline-block;
             padding: 10px 20px;
@@ -623,18 +635,18 @@
 
     <!-- Hero Section -->
     <div id="hero" class="hero">
-        <div class="hero-side hero-left">
+        <a href="#developer" class="hero-side hero-left">
             <div class="hero-content">
                 <h1 class="hero-title">Developer</h1>
                 <p class="hero-subtitle">Logic & Code</p>
             </div>
-        </div>
-        <div class="hero-side hero-right">
+        </a>
+        <a href="#author" class="hero-side hero-right">
             <div class="hero-content">
-                <h1 class="hero-title">Poet</h1>
-                <p class="hero-subtitle">Emotion & Verse</p>
+                <h1 class="hero-title">Author</h1>
+                <p class="hero-subtitle">Narrative & Soul</p>
             </div>
-        </div>
+        </a>
     </div>
 
     <!-- About Section -->
@@ -797,7 +809,7 @@
         </div>
 
         <!-- Tech Stack Icons (Kept for flavor) -->
-        <div class="tech-icons fade-in" style="margin-top: 4rem;">
+        <div class="tech-icons fade-in">
             <i class="fab fa-html5" title="HTML5"></i>
             <i class="fab fa-css3-alt" title="CSS3"></i>
             <i class="fab fa-js" title="JavaScript"></i>
