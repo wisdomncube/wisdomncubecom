@@ -33,12 +33,51 @@
             scroll-behavior: smooth;
         }
 
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-gold);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5c079;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--primary-dark);
             color: var(--text-light);
             overflow-x: hidden;
             line-height: 1.6;
+        }
+
+        /* Reading Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--primary-gold);
+            z-index: 2000;
+            box-shadow: 0 0 10px var(--primary-gold);
+        }
+
+        /* Particles Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         h1, h2, h3, h4 {
@@ -117,7 +156,7 @@
             position: relative;
             transition: flex 0.5s ease;
             overflow: hidden;
-            text-decoration: none; /* Ensure no underline on the link block */
+            text-decoration: none;
         }
 
         .hero-side::before {
@@ -172,6 +211,19 @@
             color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 3px;
+            min-height: 1.6em; /* Prevent layout jump */
+        }
+        
+        /* Typewriter Cursor Effect */
+        .typewriter-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: var(--primary-gold);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* --- About Section --- */
@@ -363,16 +415,18 @@
             margin: 0 auto;
         }
 
+        /* 3D Tilt Card Base */
         .project-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.1s ease-out, box-shadow 0.3s; /* Fast transform for smooth tilt */
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
             box-shadow: 0 20px 30px rgba(0,0,0,0.4);
             border-color: var(--primary-gold);
         }
@@ -617,6 +671,12 @@
 </head>
 <body>
 
+    <!-- Reading Progress Bar -->
+    <div id="scrollProgress" class="scroll-progress"></div>
+
+    <!-- Particle Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
     <!-- Navigation -->
     <nav>
         <div class="logo">WISDOM NCUBE</div>
@@ -638,13 +698,15 @@
         <a href="#developer" class="hero-side hero-left">
             <div class="hero-content">
                 <h1 class="hero-title">Developer</h1>
-                <p class="hero-subtitle">Logic & Code</p>
+                <!-- Added ID for typewriter -->
+                <p id="typewriter-dev" class="hero-subtitle" data-text="Logic & Code"></p>
             </div>
         </a>
         <a href="#author" class="hero-side hero-right">
             <div class="hero-content">
                 <h1 class="hero-title">Author</h1>
-                <p class="hero-subtitle">Narrative & Soul</p>
+                <!-- Added ID for typewriter -->
+                <p id="typewriter-auth" class="hero-subtitle" data-text="Narrative & Soul"></p>
             </div>
         </a>
     </div>
@@ -847,7 +909,7 @@
                 <i class="fab fa-facebook-f"></i>
             </a>
             <a href="https://x.com/wizzncube" target="_blank" aria-label="Twitter">
-                <i class="bi bi-twitter-x"></i>
+                <i class="fab fa-twitter"></i>
             </a>
             <a href="https://github.com/wisdomncube" target="_blank" aria-label="GitHub">
                 <i class="fab fa-github"></i>
@@ -861,45 +923,143 @@
     </footer>
 
     <script>
-        // Modal Logic
-        const modal = document.getElementById('previewModal');
-        const iframe = document.getElementById('previewFrame');
-        const modalTitle = document.getElementById('modalTitle');
-        const externalLink = document.getElementById('externalLink');
-
-        function openModal(url, title) {
-            modal.style.display = 'flex';
-            // Slight delay to allow display flex to apply before opacity transition
-            setTimeout(() => {
-                modal.style.opacity = '1';
-            }, 10);
-            
-            iframe.src = url;
-            modalTitle.textContent = title;
-            externalLink.href = url;
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        }
-
-        function closeModal() {
-            modal.style.opacity = '0';
-            setTimeout(() => {
-                modal.style.display = 'none';
-                iframe.src = ''; // Stop loading
-            }, 300);
-            document.body.style.overflow = 'auto'; // Restore scrolling
-        }
-
-        // Close modal when clicking outside iframe
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
+        // --- 1. Reading Progress Bar Logic ---
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
         });
 
-        // Smooth Scroll and Animation Logic
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- 2. Typewriter Effect Logic ---
+        const typeWriter = (elementId, speed = 100) => {
+            const element = document.getElementById(elementId);
+            const text = element.getAttribute('data-text');
+            element.innerHTML = ''; // Clear text
+            element.classList.add('typewriter-cursor'); // Add blinking cursor
             
-            // Intersection Observer for Fade-in animations
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // Optional: Remove cursor after typing
+                    // element.classList.remove('typewriter-cursor');
+                }
+            }
+            type();
+        };
+
+        // --- 3. 3D Card Tilt Logic ---
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Calculate center
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Calculate rotation (max 10deg)
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // --- 4. Particle System Logic ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.1; // Small dots
+                this.speedX = (Math.random() * 0.5) - 0.25;
+                this.speedY = (Math.random() * 0.5) - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                // Bounce off edges
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                ctx.fillStyle = '#c5a059'; // Gold color
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            // Calculate number of particles based on screen size
+            const numberOfParticles = (canvas.height * canvas.width) / 15000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                // Draw connections
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(197, 160, 89, ${1 - distance/100})`; // Fade out line
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize features
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start typewriter
+            setTimeout(() => {
+                typeWriter('typewriter-dev', 100);
+                typeWriter('typewriter-auth', 100);
+            }, 500); // Delay slightly
+
+            // Start particles
+            initParticles();
+            animateParticles();
+
+            // Original Intersection Observer Logic
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -935,6 +1095,39 @@
                     navLinks.style.padding = '20px';
                 }
             });
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('previewModal');
+        const iframe = document.getElementById('previewFrame');
+        const modalTitle = document.getElementById('modalTitle');
+        const externalLink = document.getElementById('externalLink');
+
+        function openModal(url, title) {
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+            
+            iframe.src = url;
+            modalTitle.textContent = title;
+            externalLink.href = url;
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                iframe.src = ''; 
+            }, 300);
+            document.body.style.overflow = 'auto'; 
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>
