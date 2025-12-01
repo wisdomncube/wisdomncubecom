@@ -947,6 +947,29 @@
                 </div>
             </div>
 
+            <!-- Project 3: Wave Studios -->
+            <div class="project-card fade-in">
+                <div class="card-header">
+                    <div class="browser-dot dot-red"></div>
+                    <div class="browser-dot dot-yellow"></div>
+                    <div class="browser-dot dot-green"></div>
+                    <div class="card-address-bar"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Wave Studios</h3>
+                    <div class="tech-stack-mini">
+                        <i class="fas fa-camera"></i>
+                        <span>Photography & Media</span>
+                    </div>
+                    <p class="card-desc">
+                        A stunning portfolio website for Wave Studios Media, a South African production powerhouse. The site features galleries for corporate, lifestyle, and event photography, showcasing their mission to redefine storytelling through exceptional visuals and creative media solutions.
+                    </p>
+                    <button class="preview-btn" onclick="openModal('https://wave-2-mocha.vercel.app/', 'Wave Studios')">
+                        <i class="fas fa-eye"></i> View Live Site
+                    </button>
+                </div>
+            </div>
+
         </div>
 
         <!-- Infinite Tech Scroller -->
@@ -1006,7 +1029,7 @@
             <a href="https://x.com/wizzncube" target="_blank" aria-label="Twitter">
                 <i class="fab fa-twitter"></i>
             </a>
-               </a>
+                </a>
             <a href="https://wa.me/27747112673" target="_blank" aria-label="Twitter">
                 <i class="fab fa-whatsapp"></i>
             </a>
@@ -1211,6 +1234,7 @@
             // Mobile Menu Toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
+            const navItems = document.querySelectorAll('.nav-links a'); // Select all links
 
             hamburger.addEventListener('click', () => {
                 if (navLinks.style.display === 'flex') {
@@ -1225,6 +1249,15 @@
                     navLinks.style.width = '100%';
                     navLinks.style.padding = '20px';
                 }
+            });
+
+            // Close menu when a link is clicked
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) { // Check if we are in mobile view
+                        navLinks.style.display = 'none';
+                    }
+                });
             });
         });
 
