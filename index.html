@@ -332,6 +332,129 @@
             display: none;
         }
 
+        /* --- Specific AI Tool Styles --- */
+        .ai-feature-btn {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ai-feature-btn:hover {
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2999;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .ai-tool-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 500px;
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid var(--primary-gold);
+            border-radius: 15px;
+            padding: 2rem;
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .ai-tool-modal.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .ai-tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+        }
+        .ai-tool-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            width: 100%;
+            outline: none;
+        }
+        .ai-tool-input:focus {
+            border-color: var(--primary-gold);
+        }
+        .ai-tool-result {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-left: 2px solid var(--primary-gold);
+            font-style: italic;
+            color: #ccc;
+            white-space: pre-wrap;
+            display: none; /* Hidden by default */
+        }
+        .ai-tool-result.active {
+            display: block;
+        }
+        .ai-generate-btn {
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .ai-generate-btn:hover {
+            background: white;
+        }
+        .ai-generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         /* Particles Canvas */
         #particle-canvas {
             position: fixed;
@@ -1233,6 +1356,22 @@
         <div id="typingIndicator" class="typing-indicator" style="padding: 0 15px 10px;">Wisdom AI is thinking...</div>
     </div>
 
+    <!-- Generic AI Tool Modal -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+    <div id="aiToolModal" class="ai-tool-modal">
+        <div class="ai-tool-header">
+            <h3 id="aiToolTitle">AI Tool</h3>
+            <i class="fas fa-times" onclick="closeAITool()" style="cursor:pointer;"></i>
+        </div>
+        <div style="position: relative;">
+            <input type="text" id="aiToolInput" class="ai-tool-input" placeholder="Enter a topic...">
+        </div>
+        <button id="aiGenerateBtn" class="ai-generate-btn" onclick="generateAIContent()">
+            <span>Generate</span> <i class="fas fa-magic"></i>
+        </button>
+        <div id="aiToolResult" class="ai-tool-result"></div>
+    </div>
+
     <!-- Back to Top Button -->
     <a href="#" id="backToTop" class="back-to-top">
         <i class="fas fa-arrow-up"></i>
@@ -1324,13 +1463,19 @@
                     This award-winning anthology explores the profound topics of love, sacrifice, religion, and the often-silenced voices of the girl child. Awarded the prestigious <strong>AfriCAN Honoree Authors' Award</strong> in South Africa (July 2022), this collection established Wisdom Ncube as a significant literary voice in Zimbabwe and beyond.
                 </p>
                 
-                <div style="margin-top: 30px; display: flex; align-items: center; gap: 20px;">
-                    <!-- Award Image small thumbnail -->
-                    <img src="481295657_2708592912666179_6215757589555293357_n.jpg" alt="The Award" style="width: 100px; border-radius: 5px; border: 1px solid var(--primary-gold);">
-                    <div>
-                        <h4 style="color: var(--primary-gold);">Awarded Excellence</h4>
-                        <small>Recognized for contribution to African Literature</small>
+                <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <!-- Award Image small thumbnail -->
+                        <img src="481295657_2708592912666179_6215757589555293357_n.jpg" alt="The Award" style="width: 100px; border-radius: 5px; border: 1px solid var(--primary-gold);">
+                        <div>
+                            <h4 style="color: var(--primary-gold);">Awarded Excellence</h4>
+                            <small>Recognized for contribution to African Literature</small>
+                        </div>
                     </div>
+                    <!-- AI FEATURE: POEM GENERATOR -->
+                    <button class="ai-feature-btn" onclick="openAITool('poem')">
+                        <i class="fas fa-feather-alt"></i> Ask the Muse ✨
+                    </button>
                 </div>
             </div>
         </div>
@@ -1516,6 +1661,10 @@
         <div class="hire-cta fade-in">
             <h3>Ready to start a project?</h3>
             <p>Let's discuss your requirements and get a custom quote.</p>
+            <!-- AI FEATURE: APP IDEA GENERATOR -->
+            <button class="ai-feature-btn" onclick="openAITool('idea')" style="background: white; color: var(--primary-dark); margin-right: 10px;">
+                <i class="fas fa-lightbulb"></i> Generate App Idea ✨
+            </button>
             <a href="mailto:wizzncube@gmail.com" class="hire-btn magnetic">
                 <i class="fas fa-paper-plane"></i> Get a Quote
             </a>
@@ -1633,21 +1782,109 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        async function callGeminiAPI(prompt) {
+        // --- NEW AI TOOLS LOGIC ---
+        const aiToolModal = document.getElementById('aiToolModal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const aiToolTitle = document.getElementById('aiToolTitle');
+        const aiToolInput = document.getElementById('aiToolInput');
+        const aiToolResult = document.getElementById('aiToolResult');
+        const aiGenerateBtn = document.getElementById('aiGenerateBtn');
+        let currentToolType = '';
+
+        function openAITool(type) {
+            currentToolType = type;
+            aiToolResult.innerHTML = '';
+            aiToolResult.classList.remove('active');
+            aiToolInput.value = '';
+            
+            if (type === 'poem') {
+                aiToolTitle.innerText = "The Muse ✨";
+                aiToolInput.placeholder = "Enter a theme (e.g., Silence, Rain, Code)...";
+                aiGenerateBtn.innerHTML = `<span>Compose Poem</span> <i class="fas fa-feather-alt"></i>`;
+            } else if (type === 'idea') {
+                aiToolTitle.innerText = "The Architect ✨";
+                aiToolInput.placeholder = "Enter an industry (e.g., Healthcare, Education)...";
+                aiGenerateBtn.innerHTML = `<span>Generate Concept</span> <i class="fas fa-lightbulb"></i>`;
+            }
+            
+            modalOverlay.classList.add('active');
+            aiToolModal.classList.add('active');
+            setTimeout(() => aiToolInput.focus(), 300);
+        }
+
+        function closeAITool() {
+            modalOverlay.classList.remove('active');
+            aiToolModal.classList.remove('active');
+        }
+
+        modalOverlay.addEventListener('click', closeAITool);
+
+        async function generateAIContent() {
+            const topic = aiToolInput.value.trim();
+            if (!topic) return;
+
+            aiGenerateBtn.disabled = true;
+            aiGenerateBtn.innerHTML = `<span>Dreaming...</span> <i class="fas fa-spinner fa-spin"></i>`;
+            aiToolResult.innerHTML = '';
+            aiToolResult.classList.add('active');
+
+            let prompt = "";
+            let systemPrompt = "";
+
+            if (currentToolType === 'poem') {
+                prompt = `Write a short, deep poem about "${topic}".`;
+                systemPrompt = "You are a poetic AI muse inspired by Wisdom Ncube. Write short, impactful free-verse poetry. Focus on raw emotion, duality, and the human condition. Keep it under 10 lines.";
+            } else if (currentToolType === 'idea') {
+                prompt = `Suggest a unique web app idea for the "${topic}" industry.`;
+                systemPrompt = "You are a tech visionary AI. Suggest a concise, innovative web app idea using a modern tech stack (React, Node, AI). Format: 'App Name: [Name] \n Concept: [One sentence] \n Key Feature: [Feature]'.";
+            }
+
+            try {
+                const response = await callGeminiAPI(prompt, systemPrompt);
+                typeWriterEffect(aiToolResult, response);
+            } catch (error) {
+                aiToolResult.innerText = "The muse is silent right now. Please try again.";
+            } finally {
+                aiGenerateBtn.disabled = false;
+                if (currentToolType === 'poem') {
+                    aiGenerateBtn.innerHTML = `<span>Compose Poem</span> <i class="fas fa-feather-alt"></i>`;
+                } else {
+                    aiGenerateBtn.innerHTML = `<span>Generate Concept</span> <i class="fas fa-lightbulb"></i>`;
+                }
+            }
+        }
+
+        function typeWriterEffect(element, text, speed = 30) {
+            element.innerHTML = '';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // --- SHARED API CALL FUNCTION ---
+        async function callGeminiAPI(userPrompt, systemPrompt) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             
-            const systemPrompt = "You are the AI persona of Wisdom Ncube, a Developer and Author from Bulawayo, Zimbabwe. You embody a duality: logic/code and narrative/soul. You wrote 'Words of Wisdom: Poetry Collection Vol. 1', which explores love, sacrifice, religion, and the voice of the girl child. Your coding stack includes React, Node.js, and Tailwind. Answer questions about Wisdom's work, philosophy, or generate poems in his style. Keep responses concise, elegant, and somewhat poetic where appropriate.";
+            // If specific system prompt is not passed (like for general chat), use default
+            if (!systemPrompt) {
+                systemPrompt = "You are the AI persona of Wisdom Ncube, a Developer and Author from Bulawayo, Zimbabwe. You embody a duality: logic/code and narrative/soul. You wrote 'Words of Wisdom: Poetry Collection Vol. 1', which explores love, sacrifice, religion, and the voice of the girl child. Your coding stack includes React, Node.js, and Tailwind. Answer questions about Wisdom's work, philosophy, or generate poems in his style. Keep responses concise, elegant, and somewhat poetic where appropriate.";
+            }
 
             const payload = {
                 contents: [{
-                    parts: [{ text: prompt }]
+                    parts: [{ text: userPrompt }]
                 }],
                 systemInstruction: {
                     parts: [{ text: systemPrompt }]
                 }
             };
 
-            // Implement simple exponential backoff
             const maxRetries = 3;
             let attempt = 0;
             
@@ -1699,7 +1936,7 @@
         });
 
         // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn');
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn, .ai-feature-btn');
         
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
