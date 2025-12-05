@@ -440,6 +440,8 @@
             background-attachment: fixed;
             background-size: cover;
             color: white;
+            /* Safe background color if image fails or on mobile */
+            background-color: #0f172a; 
         }
 
         .book-showcase {
@@ -943,19 +945,36 @@
                 flex: 1;
             }
             
-            .about-grid {
-                grid-template-columns: 1fr;
+            /* --- Fix for Author Section Text on Mobile --- */
+            .author-section {
+                background-attachment: scroll; /* Disable fixed background on mobile */
+                background-position: center;
+                /* Ensure image covers but doesnt break layout */
+                background-size: cover; 
             }
 
             .book-showcase {
                 flex-direction: column;
                 text-align: center;
+                gap: 2rem; /* Reduced gap */
             }
             
+            /* Adjust 3D container size for mobile to prevent overflow/stacking issues */
+            .book-3d-container {
+                width: 100%;
+                max-width: 250px; /* Smaller book on mobile */
+                height: 375px; /* Proportional height */
+                margin: 0 auto;
+            }
+
             .book-quote {
                 border-left: none;
                 border-top: 3px solid var(--primary-gold);
                 padding-top: 20px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
             }
 
             .nav-links {
@@ -1017,9 +1036,9 @@
             <a href="#hero" class="active magnetic">Home</a>
             <a href="#about" class="magnetic">About</a>
             <a href="#author" class="magnetic">Author</a>
+            <a href="#press" class="magnetic">Press</a>
             <a href="#developer" class="magnetic">Portfolio</a>
             <a href="#services" class="magnetic">Services</a>
-            <a href="#press" class="magnetic">Press</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
         <div class="hamburger">
@@ -1099,6 +1118,49 @@
                         <h4 style="color: var(--primary-gold);">Awarded Excellence</h4>
                         <small>Recognized for contribution to African Literature</small>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Section (Moved Here) -->
+    <section id="press" class="section press-section section-scroll" data-link="Press">
+        <div style="text-align: center;">
+            <h2 class="section-title fade-in">In The Press</h2>
+            <p class="fade-in" style="margin-top: 10px; color: #666;">Documenting the journey from Bulawayo to the World.</p>
+        </div>
+
+        <div class="press-grid">
+            <!-- News Article 1 -->
+            <div class="press-item fade-in">
+                <img src="480962028_2702215599970577_4291725976441402062_n.jpg" alt="AllAfrica Article">
+                <div class="press-overlay">
+                    <h4>AllAfrica / New Zimbabwe</h4>
+                    <p>"Zimbabwean Author Gets African Recognition"</p>
+                </div>
+            </div>
+            <!-- News Article 2 -->
+            <div class="press-item fade-in">
+                <img src="480799281_2702206123304858_4362177325754504039_n.jpg" alt="NewsDay Article">
+                <div class="press-overlay">
+                    <h4>NewsDay Life & Style</h4>
+                    <p>"Byo poet's anthology nominated for international award"</p>
+                </div>
+            </div>
+            <!-- News Article 3 -->
+            <div class="press-item fade-in">
+                <img src="480778372_2702211509970986_3405744343297033689_n.jpg" alt="Newspaper Spread">
+                <div class="press-overlay">
+                    <h4>Print Feature</h4>
+                    <p>Featured alongside Zimbabwe's creative giants.</p>
+                </div>
+            </div>
+            <!-- Extra Photo -->
+            <div class="press-item fade-in">
+                <img src="488207155_2742266812632122_6248440323943516653_n.jpg" alt="Wisdom at work">
+                <div class="press-overlay">
+                    <h4>The Developer</h4>
+                    <p>Powering future tech.</p>
                 </div>
             </div>
         </div>
@@ -1244,49 +1306,6 @@
             <a href="mailto:wizzncube@gmail.com" class="hire-btn magnetic">
                 <i class="fas fa-paper-plane"></i> Get a Quote
             </a>
-        </div>
-    </section>
-
-    <!-- Press Section -->
-    <section id="press" class="section press-section section-scroll" data-link="Press">
-        <div style="text-align: center;">
-            <h2 class="section-title fade-in">In The Press</h2>
-            <p class="fade-in" style="margin-top: 10px; color: #666;">Documenting the journey from Bulawayo to the World.</p>
-        </div>
-
-        <div class="press-grid">
-            <!-- News Article 1 -->
-            <div class="press-item fade-in">
-                <img src="480962028_2702215599970577_4291725976441402062_n.jpg" alt="AllAfrica Article">
-                <div class="press-overlay">
-                    <h4>AllAfrica / New Zimbabwe</h4>
-                    <p>"Zimbabwean Author Gets African Recognition"</p>
-                </div>
-            </div>
-            <!-- News Article 2 -->
-            <div class="press-item fade-in">
-                <img src="480799281_2702206123304858_4362177325754504039_n.jpg" alt="NewsDay Article">
-                <div class="press-overlay">
-                    <h4>NewsDay Life & Style</h4>
-                    <p>"Byo poet's anthology nominated for international award"</p>
-                </div>
-            </div>
-            <!-- News Article 3 -->
-            <div class="press-item fade-in">
-                <img src="480778372_2702211509970986_3405744343297033689_n.jpg" alt="Newspaper Spread">
-                <div class="press-overlay">
-                    <h4>Print Feature</h4>
-                    <p>Featured alongside Zimbabwe's creative giants.</p>
-                </div>
-            </div>
-            <!-- Extra Photo -->
-            <div class="press-item fade-in">
-                <img src="488207155_2742266812632122_6248440323943516653_n.jpg" alt="Wisdom at work">
-                <div class="press-overlay">
-                    <h4>The Developer</h4>
-                    <p>Powering future tech.</p>
-                </div>
-            </div>
         </div>
     </section>
 
