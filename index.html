@@ -39,6 +39,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none; /* Hide default cursor for custom implementation */
         }
 
         html {
@@ -66,6 +67,39 @@
             color: var(--text-light);
             overflow-x: hidden;
             line-height: 1.6;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 5px;
+            height: 5px;
+            background-color: var(--primary-gold);
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--primary-gold);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Hover state for cursor */
+        body.hovering .cursor-outline {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(197, 160, 89, 0.1);
+            border-color: transparent;
         }
 
         /* Reading Progress Bar */
@@ -174,10 +208,27 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
         }
 
         .nav-links a:hover {
             color: var(--primary-gold);
+        }
+
+        /* Active Navigation Link Style */
+        .nav-links a.active {
+            color: var(--primary-gold);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-gold);
+            box-shadow: 0 0 5px var(--primary-gold);
         }
 
         .hamburger {
@@ -824,6 +875,9 @@
 
         /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
+            * { cursor: auto; } /* Reset cursor for touch devices */
+            .cursor-dot, .cursor-outline { display: none; } /* Hide custom cursor */
+
             .hero {
                 flex-direction: column;
             }
@@ -877,6 +931,9 @@
     </style>
 </head>
 <body>
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <!-- Reading Progress Bar -->
     <div id="scrollProgress" class="scroll-progress"></div>
@@ -893,7 +950,7 @@
     <nav>
         <div class="logo cipher-text" data-value="WISDOM NCUBE">WISDOM NCUBE</div>
         <div class="nav-links">
-            <a href="#hero">Home</a>
+            <a href="#hero" class="active">Home</a>
             <a href="#about">About</a>
             <a href="#author">Author</a>
             <a href="#developer">Portfolio</a>
@@ -907,7 +964,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <div id="hero" class="hero">
+    <div id="hero" class="hero section-scroll" data-link="Home">
         <a href="#developer" class="hero-side hero-left">
             <div class="hero-content">
                 <h1 class="hero-title">Developer</h1>
@@ -925,7 +982,7 @@
     </div>
 
     <!-- About Section -->
-    <section id="about" class="section about">
+    <section id="about" class="section about section-scroll" data-link="About">
         <h2 class="section-title fade-in">The Man Behind The Words</h2>
         <div class="about-grid">
             <div class="about-img fade-in">
@@ -947,7 +1004,7 @@
     </section>
 
     <!-- Author Section (The Masterpiece) -->
-    <section id="author" class="section author-section">
+    <section id="author" class="section author-section section-scroll" data-link="Author">
         <div style="text-align: center;">
             <div class="award-badge fade-in">
                 <i class="fas fa-trophy"></i>
@@ -983,51 +1040,8 @@
         </div>
     </section>
 
-    <!-- Press Section -->
-    <section id="press" class="section press-section">
-        <div style="text-align: center;">
-            <h2 class="section-title fade-in">In The Press</h2>
-            <p class="fade-in" style="margin-top: 10px; color: #666;">Documenting the journey from Bulawayo to the World.</p>
-        </div>
-
-        <div class="press-grid">
-            <!-- News Article 1 -->
-            <div class="press-item fade-in">
-                <img src="480962028_2702215599970577_4291725976441402062_n.jpg" alt="AllAfrica Article">
-                <div class="press-overlay">
-                    <h4>AllAfrica / New Zimbabwe</h4>
-                    <p>"Zimbabwean Author Gets African Recognition"</p>
-                </div>
-            </div>
-            <!-- News Article 2 -->
-            <div class="press-item fade-in">
-                <img src="480799281_2702206123304858_4362177325754504039_n.jpg" alt="NewsDay Article">
-                <div class="press-overlay">
-                    <h4>NewsDay Life & Style</h4>
-                    <p>"Byo poet's anthology nominated for international award"</p>
-                </div>
-            </div>
-            <!-- News Article 3 -->
-            <div class="press-item fade-in">
-                <img src="480778372_2702211509970986_3405744343297033689_n.jpg" alt="Newspaper Spread">
-                <div class="press-overlay">
-                    <h4>Print Feature</h4>
-                    <p>Featured alongside Zimbabwe's creative giants.</p>
-                </div>
-            </div>
-            <!-- Extra Photo -->
-            <div class="press-item fade-in">
-                <img src="488207155_2742266812632122_6248440323943516653_n.jpg" alt="Wisdom at work">
-                <div class="press-overlay">
-                    <h4>The Developer</h4>
-                    <p>Powering future tech.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Developer Section (Updated to Portfolio) -->
-    <section id="developer" class="section developer-section">
+    <section id="developer" class="section developer-section section-scroll" data-link="Portfolio">
         <div style="text-align: center; margin-bottom: 3rem;">
             <h2 class="section-title light fade-in cipher-text" data-value="Web Portfolio">Web Portfolio</h2>
             <p class="tech-subtitle fade-in">Digital Solutions Engineered for Performance</p>
@@ -1133,7 +1147,7 @@
     </section>
 
     <!-- Services / Hire Me Section -->
-    <section id="services" class="section services-section">
+    <section id="services" class="section services-section section-scroll" data-link="Services">
         <div style="text-align: center; margin-bottom: 3rem;">
             <h2 class="section-title fade-in">Services & Collaboration</h2>
             <p class="tech-subtitle fade-in" style="color: #666; margin-bottom: 3rem;">Turn your ideas into reality with professional web development.</p>
@@ -1169,6 +1183,49 @@
         </div>
     </section>
 
+    <!-- Press Section -->
+    <section id="press" class="section press-section section-scroll" data-link="Press">
+        <div style="text-align: center;">
+            <h2 class="section-title fade-in">In The Press</h2>
+            <p class="fade-in" style="margin-top: 10px; color: #666;">Documenting the journey from Bulawayo to the World.</p>
+        </div>
+
+        <div class="press-grid">
+            <!-- News Article 1 -->
+            <div class="press-item fade-in">
+                <img src="480962028_2702215599970577_4291725976441402062_n.jpg" alt="AllAfrica Article">
+                <div class="press-overlay">
+                    <h4>AllAfrica / New Zimbabwe</h4>
+                    <p>"Zimbabwean Author Gets African Recognition"</p>
+                </div>
+            </div>
+            <!-- News Article 2 -->
+            <div class="press-item fade-in">
+                <img src="480799281_2702206123304858_4362177325754504039_n.jpg" alt="NewsDay Article">
+                <div class="press-overlay">
+                    <h4>NewsDay Life & Style</h4>
+                    <p>"Byo poet's anthology nominated for international award"</p>
+                </div>
+            </div>
+            <!-- News Article 3 -->
+            <div class="press-item fade-in">
+                <img src="480778372_2702211509970986_3405744343297033689_n.jpg" alt="Newspaper Spread">
+                <div class="press-overlay">
+                    <h4>Print Feature</h4>
+                    <p>Featured alongside Zimbabwe's creative giants.</p>
+                </div>
+            </div>
+            <!-- Extra Photo -->
+            <div class="press-item fade-in">
+                <img src="488207155_2742266812632122_6248440323943516653_n.jpg" alt="Wisdom at work">
+                <div class="press-overlay">
+                    <h4>The Developer</h4>
+                    <p>Powering future tech.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Live Preview Modal -->
     <div id="previewModal" class="live-preview-modal">
         <div class="modal-header">
@@ -1189,7 +1246,7 @@
     </div>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer id="contact" class="section-scroll" data-link="Contact">
         <h3 style="color: white; font-family: 'Cinzel'; margin-bottom: 1rem;">Wisdom Ncube</h3>
         <p style="color: #888; margin-bottom: 2rem;">Zimbabwe, South Africa, Honduras</p>
         
@@ -1216,6 +1273,41 @@
     </footer>
 
     <script>
+        // --- 0. Custom Cursor Logic ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        // Mouse Move Listener
+        window.addEventListener('mousemove', function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows immediately
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with slight delay (animation built into css transition)
+            cursorOutline.style.left = `${posX}px`;
+            cursorOutline.style.top = `${posY}px`;
+            
+            // Interaction Check (for expansion)
+            // Use elementsFromPoint to check if we are hovering over interactive stuff
+            // Simplified: Add listeners to specific elements
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
+            });
+        });
+
+
         // --- 1. Reading Progress Bar Logic ---
         window.addEventListener('scroll', () => {
             const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -1301,10 +1393,21 @@
             }
         });
 
-        // --- 5. Particle System Logic ---
+        // --- 5. UPDATED Interactive Particle System Logic ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particlesArray;
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 150 // Radius for connection
+        };
+
+        // Track Mouse
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
 
         // Set canvas size
         canvas.width = window.innerWidth;
@@ -1343,7 +1446,7 @@
         function initParticles() {
             particlesArray = [];
             // Calculate number of particles based on screen size
-            const numberOfParticles = (canvas.height * canvas.width) / 15000;
+            const numberOfParticles = (canvas.height * canvas.width) / 10000; // Increased density slightly
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
@@ -1354,17 +1457,35 @@
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
                 particlesArray[i].draw();
-                // Draw connections
+                
+                // Draw connections between particles
                 for (let j = i; j < particlesArray.length; j++) {
                     const dx = particlesArray[i].x - particlesArray[j].x;
                     const dy = particlesArray[i].y - particlesArray[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
+                    
                     if (distance < 100) {
                         ctx.beginPath();
                         ctx.strokeStyle = `rgba(197, 160, 89, ${1 - distance/100})`; // Fade out line
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
                         ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+                
+                // Draw connections to Mouse
+                if (mouse.x != null) {
+                    const dx = particlesArray[i].x - mouse.x;
+                    const dy = particlesArray[i].y - mouse.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(197, 160, 89, ${1 - distance/mouse.radius})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
                         ctx.stroke();
                     }
                 }
@@ -1384,7 +1505,7 @@
             initParticles();
             animateParticles();
 
-            // Original Intersection Observer Logic
+            // Original Intersection Observer Logic (Fade In)
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -1402,23 +1523,48 @@
             const fadeElements = document.querySelectorAll('.fade-in');
             fadeElements.forEach(el => observer.observe(el));
 
+            // --- 6. Active Nav / Scroll Spy Logic ---
+            const sections = document.querySelectorAll('.section-scroll');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Offset for fixed header
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                        current = section.getAttribute('data-link');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.textContent.includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+
             // Mobile Menu Toggle
             const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.querySelector('.nav-links');
+            const navLinksContainer = document.querySelector('.nav-links');
             const navItems = document.querySelectorAll('.nav-links a'); // Select all links
 
             hamburger.addEventListener('click', () => {
-                if (navLinks.style.display === 'flex') {
-                    navLinks.style.display = 'none';
+                if (navLinksContainer.style.display === 'flex') {
+                    navLinksContainer.style.display = 'none';
                 } else {
-                    navLinks.style.display = 'flex';
-                    navLinks.style.flexDirection = 'column';
-                    navLinks.style.position = 'absolute';
-                    navLinks.style.top = '70px';
-                    navLinks.style.right = '0';
-                    navLinks.style.background = 'rgba(15, 23, 42, 0.95)';
-                    navLinks.style.width = '100%';
-                    navLinks.style.padding = '20px';
+                    navLinksContainer.style.display = 'flex';
+                    navLinksContainer.style.flexDirection = 'column';
+                    navLinksContainer.style.position = 'absolute';
+                    navLinksContainer.style.top = '70px';
+                    navLinksContainer.style.right = '0';
+                    navLinksContainer.style.background = 'rgba(15, 23, 42, 0.95)';
+                    navLinksContainer.style.width = '100%';
+                    navLinksContainer.style.padding = '20px';
                 }
             });
 
@@ -1426,7 +1572,7 @@
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     if (window.innerWidth <= 768) { // Check if we are in mobile view
-                        navLinks.style.display = 'none';
+                        navLinksContainer.style.display = 'none';
                     }
                 });
             });
