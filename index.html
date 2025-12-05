@@ -209,6 +209,8 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
+            display: inline-block; /* Required for magnetic effect */
+            transition: color 0.3s, transform 0.1s ease-out; /* Fast transform for magnetic feel */
         }
 
         .nav-links a:hover {
@@ -873,6 +875,16 @@
             transform: translateY(0);
         }
 
+        /* Staggered Animation Delays */
+        .portfolio-grid .project-card.visible:nth-child(1) { transition-delay: 0ms; }
+        .portfolio-grid .project-card.visible:nth-child(2) { transition-delay: 200ms; }
+        .portfolio-grid .project-card.visible:nth-child(3) { transition-delay: 400ms; }
+        
+        .press-grid .press-item.visible:nth-child(1) { transition-delay: 0ms; }
+        .press-grid .press-item.visible:nth-child(2) { transition-delay: 150ms; }
+        .press-grid .press-item.visible:nth-child(3) { transition-delay: 300ms; }
+        .press-grid .press-item.visible:nth-child(4) { transition-delay: 450ms; }
+
         /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
             * { cursor: auto; } /* Reset cursor for touch devices */
@@ -950,13 +962,13 @@
     <nav>
         <div class="logo cipher-text" data-value="WISDOM NCUBE">WISDOM NCUBE</div>
         <div class="nav-links">
-            <a href="#hero" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#author">Author</a>
-            <a href="#developer">Portfolio</a>
-            <a href="#services">Services</a> <!-- Added Services Link -->
-            <a href="#press">Press</a>
-            <a href="#contact">Contact</a>
+            <a href="#hero" class="active magnetic">Home</a>
+            <a href="#about" class="magnetic">About</a>
+            <a href="#author" class="magnetic">Author</a>
+            <a href="#developer" class="magnetic">Portfolio</a>
+            <a href="#services" class="magnetic">Services</a>
+            <a href="#press" class="magnetic">Press</a>
+            <a href="#contact" class="magnetic">Contact</a>
         </div>
         <div class="hamburger">
             <i class="fas fa-bars"></i>
@@ -1177,7 +1189,7 @@
         <div class="hire-cta fade-in">
             <h3>Ready to start a project?</h3>
             <p>Let's discuss your requirements and get a custom quote.</p>
-            <a href="mailto:wizzncube@gmail.com" class="hire-btn">
+            <a href="mailto:wizzncube@gmail.com" class="hire-btn magnetic">
                 <i class="fas fa-paper-plane"></i> Get a Quote
             </a>
         </div>
@@ -1544,6 +1556,27 @@
                     if (link.textContent.includes(current)) {
                         link.classList.add('active');
                     }
+                });
+            });
+
+
+            // --- 7. Magnetic Button Logic ---
+            const magneticButtons = document.querySelectorAll('.magnetic');
+            
+            magneticButtons.forEach(btn => {
+                btn.addEventListener('mousemove', function(e) {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    // Intensity of magnetism (lower is stronger)
+                    const intensity = 5; 
+                    
+                    btn.style.transform = `translate(${x/intensity}px, ${y/intensity}px)`;
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    btn.style.transform = `translate(0px, 0px)`;
                 });
             });
 
