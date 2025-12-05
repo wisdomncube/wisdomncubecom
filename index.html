@@ -82,6 +82,7 @@
             justify-content: center;
             align-items: center;
             transition: opacity 0.8s ease-out, visibility 0.8s;
+            overflow: hidden;
         }
         
         .preloader.hidden {
@@ -90,11 +91,30 @@
             pointer-events: none;
         }
 
+        /* Video Background for Preloader */
+        .preloader-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.4); /* Darken video so text pops */
+        }
+
+        .loader-content {
+            position: relative;
+            z-index: 2; /* Text above video */
+            text-align: center;
+        }
+
         .loader-text {
             font-family: 'Cinzel', serif;
             font-size: 2rem;
             color: var(--primary-gold);
             letter-spacing: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         /* Custom Cursor */
@@ -175,6 +195,141 @@
             background: transparent;
             color: var(--primary-gold);
             border-color: var(--primary-gold);
+        }
+
+        /* --- AI Chat Widget Styles --- */
+        .chat-widget-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.4);
+            border: none;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.5rem;
+        }
+
+        .chat-widget-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 20px;
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease;
+        }
+
+        .chat-window.open {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .chat-header {
+            background: rgba(197, 160, 89, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h4 {
+            color: var(--primary-gold);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.user {
+            background: var(--primary-gold);
+            color: var(--primary-dark);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 20px;
+            color: white;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-gold);
+        }
+
+        .chat-send {
+            background: none;
+            border: none;
+            color: var(--primary-gold);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            display: none;
         }
 
         /* Particles Canvas */
@@ -355,6 +510,26 @@
             60% { transform: skew(-1deg); }
             80% { transform: skew(1deg); }
             100% { transform: skew(0deg); }
+        }
+
+        /* --- VIDEO-ISH: Scanlines Overlay --- */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .hero-subtitle {
@@ -674,10 +849,19 @@
         }
 
         /* --- Services / Hire Me Section --- */
+        /* --- VIDEO-ISH: Animated Gradient --- */
         .services-section {
-            background: var(--bg-paper);
+            background: linear-gradient(-45deg, #f9f8f4, #e2e8f0, #f9f8f4, #cbd5e1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: var(--text-dark);
             text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .services-grid {
@@ -1009,6 +1193,9 @@
 <body>
     <!-- Preloader -->
     <div id="preloader" class="preloader">
+        <video autoplay muted loop playsinline class="preloader-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-white-particles-in-darkness-2292-large.mp4" type="video/mp4">
+        </video>
         <div class="loader-content">
             <div id="loader-text" class="loader-text cipher-text" data-value="LOADING...">LOADING...</div>
         </div>
@@ -1020,6 +1207,31 @@
 
     <!-- Reading Progress Bar -->
     <div id="scrollProgress" class="scroll-progress"></div>
+
+    <!-- AI Chat Widget -->
+    <button id="chatLaunchBtn" class="chat-widget-btn magnetic">
+        <span class="sparkle">✨</span>
+    </button>
+
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <h4>Chat with Wisdom AI ✨</h4>
+            <i class="fas fa-times" id="closeChatBtn" style="cursor: pointer; color: #888;"></i>
+        </div>
+        <div id="chatMessages" class="chat-messages">
+            <!-- Initial Greeting -->
+            <div class="message bot">
+                Hello. I am the digital echo of Wisdom Ncube. Ask me about my poetry, my code, or the philosophy that binds them.
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Ask something..." onkeypress="handleKeyPress(event)">
+            <button class="chat-send" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div id="typingIndicator" class="typing-indicator" style="padding: 0 15px 10px;">Wisdom AI is thinking...</div>
+    </div>
 
     <!-- Back to Top Button -->
     <a href="#" id="backToTop" class="back-to-top">
@@ -1048,6 +1260,7 @@
 
     <!-- Hero Section -->
     <div id="hero" class="hero section-scroll" data-link="Home">
+        <div class="scanlines"></div> <!-- NEW SCANLINES -->
         <a href="#developer" class="hero-side hero-left">
             <div class="hero-content">
                 <h1 class="hero-title">Developer</h1>
@@ -1356,6 +1569,113 @@
     </footer>
 
     <script>
+        // --- GEMINI API INTEGRATION ---
+        const apiKey = ""; // API key will be injected by environment
+
+        // Chat Widget Toggle Logic
+        const chatLaunchBtn = document.getElementById('chatLaunchBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        chatLaunchBtn.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if (chatWindow.classList.contains('open')) {
+                chatInput.focus();
+            }
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatWindow.classList.remove('open');
+        });
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (!userMessage) return;
+
+            // Add user message to UI
+            addMessageToChat(userMessage, 'user');
+            chatInput.value = '';
+            
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // Call Gemini API
+                const response = await callGeminiAPI(userMessage);
+                
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+                
+                // Add bot response to UI
+                addMessageToChat(response, 'bot');
+            } catch (error) {
+                console.error("Error calling Gemini:", error);
+                typingIndicator.style.display = 'none';
+                addMessageToChat("My digital connection is flickering. Please try again in a moment.", 'bot');
+            }
+        }
+
+        function addMessageToChat(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.innerText = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function callGeminiAPI(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const systemPrompt = "You are the AI persona of Wisdom Ncube, a Developer and Author from Bulawayo, Zimbabwe. You embody a duality: logic/code and narrative/soul. You wrote 'Words of Wisdom: Poetry Collection Vol. 1', which explores love, sacrifice, religion, and the voice of the girl child. Your coding stack includes React, Node.js, and Tailwind. Answer questions about Wisdom's work, philosophy, or generate poems in his style. Keep responses concise, elegant, and somewhat poetic where appropriate.";
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            // Implement simple exponential backoff
+            const maxRetries = 3;
+            let attempt = 0;
+            
+            while (attempt < maxRetries) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "I have no words for that at the moment.";
+                } catch (e) {
+                    attempt++;
+                    if (attempt >= maxRetries) throw e;
+                    await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt)));
+                }
+            }
+        }
+
+
         // --- 0. Custom Cursor Logic ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
@@ -1379,7 +1699,7 @@
         });
 
         // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side');
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn');
         
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
