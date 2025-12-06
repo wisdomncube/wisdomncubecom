@@ -1083,6 +1083,90 @@
             color: #0f172a;
         }
 
+        /* --- TESTIMONIALS SECTION (NEW) --- */
+        .testimonials-section {
+            background-color: var(--primary-dark);
+            position: relative;
+            overflow: hidden; /* For background decorations */
+            padding-bottom: 6rem;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 2.5rem;
+            border-radius: 15px;
+            position: relative;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .quote-icon-bg {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            color: rgba(197, 160, 89, 0.1);
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+        }
+
+        .client-quote {
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .client-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-gold);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-dark);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .client-details h4 {
+            color: var(--primary-gold);
+            font-size: 1rem;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .client-details span {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
         .live-preview-modal {
             position: fixed;
             top: 0;
@@ -1238,6 +1322,10 @@
         .press-grid .press-item.visible:nth-child(2) { transition-delay: 150ms; }
         .press-grid .press-item.visible:nth-child(3) { transition-delay: 300ms; }
         .press-grid .press-item.visible:nth-child(4) { transition-delay: 450ms; }
+        
+        .testimonial-grid .testimonial-card.visible:nth-child(1) { transition-delay: 0ms; }
+        .testimonial-grid .testimonial-card.visible:nth-child(2) { transition-delay: 200ms; }
+        .testimonial-grid .testimonial-card.visible:nth-child(3) { transition-delay: 400ms; }
 
         /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
@@ -1390,6 +1478,7 @@
             <a href="#press" class="magnetic">Press</a>
             <a href="#developer" class="magnetic">Portfolio</a>
             <a href="#services" class="magnetic">Services</a>
+            <a href="#testimonials" class="magnetic">Testimonials</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
         <div class="hamburger">
@@ -1671,6 +1760,61 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section testimonials-section section-scroll" data-link="Testimonials">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 class="section-title light fade-in">Echoes of Collaboration</h2>
+            <p class="tech-subtitle fade-in">What others say about working with Wisdom.</p>
+        </div>
+
+        <div class="testimonial-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon-bg">"</div>
+                <p class="client-quote">
+                    Wisdom has an uncanny ability to turn abstract ideas into functional, beautiful code. His attention to detail on the TM Branding portfolio was exceptional, delivering a site that truly reflects our creative vision.
+                </p>
+                <div class="client-info">
+                    <div class="client-avatar">T</div>
+                    <div class="client-details">
+                        <h4>Tsepiso M.</h4>
+                        <span>Director, TM Branding Solutions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon-bg">"</div>
+                <p class="client-quote">
+                    Reading 'Words of Wisdom' was a spiritual experience. It is rare to find a developer who understands the human soul as deeply as he understands algorithms. A true creative force.
+                </p>
+                <div class="client-info">
+                    <div class="client-avatar">S</div>
+                    <div class="client-details">
+                        <h4>Sarah D.</h4>
+                        <span>Literary Critic & Reader</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card fade-in">
+                <div class="quote-icon-bg">"</div>
+                <p class="client-quote">
+                    Our media portfolio required a sophisticated touch to properly showcase our photography and video work. Wisdom delivered a high-performance site that lets our visuals speak for themselves. Excellent collaboration.
+                </p>
+                <div class="client-info">
+                    <div class="client-avatar">W</div>
+                    <div class="client-details">
+                        <h4>Director</h4>
+                        <span>Wave Studios</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Live Preview Modal -->
     <div id="previewModal" class="live-preview-modal">
         <div class="modal-header">
@@ -1936,7 +2080,7 @@
         });
 
         // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn, .ai-feature-btn');
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn, .ai-feature-btn, .testimonial-card');
         
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -2178,7 +2322,7 @@
                 });
             }, observerOptions);
 
-            const fadeElements = document.querySelectorAll('.fade-in');
+            const fadeElements = document.querySelectorAll('.fade-in, .testimonial-card');
             fadeElements.forEach(el => observer.observe(el));
 
             // --- 6. Active Nav / Scroll Spy Logic ---
