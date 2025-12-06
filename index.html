@@ -769,7 +769,7 @@
         }
         
         /* Note: Hover tilt removed here to avoid conflict with parallax, 
-           or needs to be combined in JS. Keeping simplistic for now. */
+            or needs to be combined in JS. Keeping simplistic for now. */
 
         .book-details {
             max-width: 600px;
@@ -1085,7 +1085,7 @@
             color: #0f172a;
         }
 
-        /* --- TESTIMONIALS SECTION (NEW) --- */
+        /* --- TESTIMONIALS SECTION --- */
         .testimonials-section {
             background-color: var(--primary-dark);
             position: relative;
@@ -1167,6 +1167,82 @@
         .client-details span {
             font-size: 0.8rem;
             color: #888;
+        }
+
+        /* --- FAQ SECTION (NEW) --- */
+        .faq-section {
+            background-color: #0b1120; /* Slightly darker to separate sections */
+            color: var(--text-light);
+            padding-bottom: 6rem;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(197, 160, 89, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 20px 25px;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-gold);
+        }
+
+        .faq-question.active {
+            color: var(--primary-gold);
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        .faq-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+            color: var(--primary-gold);
+        }
+
+        .faq-question.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .faq-answer-content {
+            padding: 0 25px 25px 25px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
         .live-preview-modal {
@@ -1329,6 +1405,11 @@
         .testimonial-grid .testimonial-card.visible:nth-child(2) { transition-delay: 200ms; }
         .testimonial-grid .testimonial-card.visible:nth-child(3) { transition-delay: 400ms; }
 
+        .faq-container .faq-item.visible:nth-child(1) { transition-delay: 0ms; }
+        .faq-container .faq-item.visible:nth-child(2) { transition-delay: 100ms; }
+        .faq-container .faq-item.visible:nth-child(3) { transition-delay: 200ms; }
+        .faq-container .faq-item.visible:nth-child(4) { transition-delay: 300ms; }
+
         /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
             * { cursor: auto; } /* Reset cursor for touch devices */
@@ -1481,6 +1562,7 @@
             <a href="#developer" class="magnetic">Portfolio</a>
             <a href="#services" class="magnetic">Services</a>
             <a href="#testimonials" class="magnetic">Testimonials</a>
+            <a href="#faq" class="magnetic">FAQ</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
         <div class="hamburger">
@@ -1817,6 +1899,68 @@
         </div>
     </section>
 
+    <!-- NEW FAQ SECTION -->
+    <section id="faq" class="section faq-section section-scroll" data-link="FAQ">
+        <div style="text-align: center;">
+            <h2 class="section-title light fade-in">Inquiries & Insights</h2>
+            <p class="tech-subtitle fade-in">Common questions regarding my work and process.</p>
+        </div>
+
+        <div class="faq-container">
+            <!-- Q1 -->
+            <div class="faq-item fade-in">
+                <button class="faq-question">
+                    <span>Are you currently open to freelance projects?</span>
+                    <i class="fas fa-plus faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, I am currently accepting new projects. I specialize in building custom portfolios, business websites, and web applications using React, Node.js, and modern CSS frameworks. Please use the contact form or email me directly for a quote.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="faq-item fade-in">
+                <button class="faq-question">
+                    <span>Where can I purchase "Words of Wisdom"?</span>
+                    <i class="fas fa-plus faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        "Words of Wisdom: Poetry Collection Vol. 1" is available through major book retailers. You can order physical copies directly through me if you are in South Africa or Zimbabwe, or contact me for digital distribution links.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="faq-item fade-in">
+                <button class="faq-question">
+                    <span>Do you offer ghostwriting or editing services?</span>
+                    <i class="fas fa-plus faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes. With my background as an Editor for Cloutbase magazine and a published author, I offer technical writing, creative editing, and ghostwriting services for select projects that align with my creative values.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="faq-item fade-in">
+                <button class="faq-question">
+                    <span>What technology stack do you primarily use?</span>
+                    <i class="fas fa-plus faq-icon"></i>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        My primary stack is the MERN stack (MongoDB, Express, React, Node.js). For styling, I frequently use Tailwind CSS or Sass. I also have experience with Next.js for SEO-optimized applications and Firebase for serverless backends.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Live Preview Modal -->
     <div id="previewModal" class="live-preview-modal">
         <div class="modal-header">
@@ -2082,7 +2226,8 @@
         });
 
         // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn, .ai-feature-btn, .testimonial-card');
+        // ADDED: .faq-question
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .press-item, .hero-side, .chat-widget-btn, .ai-feature-btn, .testimonial-card, .faq-question');
         
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -2283,6 +2428,33 @@
             requestAnimationFrame(animateParticles);
         }
 
+        // --- NEW FAQ LOGIC ---
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                // Toggle active state for button
+                question.classList.toggle('active');
+                
+                // Toggle answer visibility
+                const answer = question.nextElementSibling;
+                if (question.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                } else {
+                    answer.style.maxHeight = 0;
+                }
+                
+                // Optional: Close other FAQs when one opens (Accordion style)
+                faqQuestions.forEach(otherQuestion => {
+                    if (otherQuestion !== question && otherQuestion.classList.contains('active')) {
+                        otherQuestion.classList.remove('active');
+                        otherQuestion.nextElementSibling.style.maxHeight = 0;
+                    }
+                });
+            });
+        });
+
+
         // Initialize features
         document.addEventListener('DOMContentLoaded', () => {
             // --- 8. Preloader Logic ---
@@ -2324,7 +2496,8 @@
                 });
             }, observerOptions);
 
-            const fadeElements = document.querySelectorAll('.fade-in, .testimonial-card');
+            // ADDED: .faq-item
+            const fadeElements = document.querySelectorAll('.fade-in, .testimonial-card, .faq-item');
             fadeElements.forEach(el => observer.observe(el));
 
             // --- 6. Active Nav / Scroll Spy Logic ---
